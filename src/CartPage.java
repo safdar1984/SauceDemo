@@ -1,5 +1,8 @@
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class CartPage {
 	
@@ -9,10 +12,22 @@ public class CartPage {
 		
 	}
 	
-	public String FindProduct(WebDriver driver) {
+	public int FindProduct(WebDriver driver,String product) throws InterruptedException {
 		
-		String text = driver.findElement(By.xpath("//div[@class='cart_item']//a")).getText();
-		return text;
+		
+		List<WebElement> cartProducts = driver.findElements(By.cssSelector("div.cart_item"+" div a"));
+		int totalCartProducts = cartProducts.size();
+		
+		for(int i = 0; i<totalCartProducts;i++) {
+			
+			String name = cartProducts.get(i).getText();
+			if(name.equals(product)) {
+				System.out.println("Product matches");
+				driver.findElements(By.xpath("//button[text()='Remove']")).get(i).click();
+			}
+		}
+		
+		return totalCartProducts;
 	}
 
 	public double getPrice(WebDriver driver) {
