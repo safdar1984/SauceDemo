@@ -10,7 +10,7 @@ public class BaseClass {
 
 		WebDriver driver = new EdgeDriver();
 		driver.manage().window().maximize();
-		String product = "Sauce Labs Fleece Jacket";
+		String product = "Test.allTheThings() T-Shirt (Red)";
 
 		Login login = new Login();
 		SelectProduct selectPrd = new SelectProduct();
@@ -23,30 +23,20 @@ public class BaseClass {
 
 		cartpage.gotoCart(driver);
 
-	//	String foundProduct = cartpage.FindProduct(driver);
-		System.out.println("Total no of products are "+cartpage.removeProduct(driver, product));
-		
-		
+		System.out.println("Product price is " + cartpage.getPrice(driver, product));
 
-		/*
-		 * if (product.equals(foundProduct)) {
-		 * 
-		 * double productPrice = cartpage.getPrice(driver);
-		 * 
-		 * if (productPrice > 25) {
-		 * 
-		 * cartpage.removeProduct(driver);
-		 * 
-		 * } else {
-		 * 
-		 * System.out.println(productPrice + " is price");
-		 * 
-		 * }
-		 * 
-		 * } else {
-		 * 
-		 * System.out.println("Product doesn't match"); }
-		 */
+		double productPrice = cartpage.getPrice(driver, product);
+
+		if (productPrice > 5) {
+
+			cartpage.removeProduct(driver, product);
+
+		} else {
+
+			System.out.println(productPrice + " is price");
+
+		}
+
 	}
 
 }
