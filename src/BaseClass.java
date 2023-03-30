@@ -23,8 +23,30 @@ public class BaseClass {
 
 		cartpage.gotoCart(driver);
 
-		System.out.println("Total no of products are "+cartpage.FindProduct(driver, product));
+	//	String foundProduct = cartpage.FindProduct(driver);
+		System.out.println("Total no of products are "+cartpage.removeProduct(driver, product));
 		
+		
+
+		/*
+		 * if (product.equals(foundProduct)) {
+		 * 
+		 * double productPrice = cartpage.getPrice(driver);
+		 * 
+		 * if (productPrice > 25) {
+		 * 
+		 * cartpage.removeProduct(driver);
+		 * 
+		 * } else {
+		 * 
+		 * System.out.println(productPrice + " is price");
+		 * 
+		 * }
+		 * 
+		 * } else {
+		 * 
+		 * System.out.println("Product doesn't match"); }
+		 */
 	}
 
 }

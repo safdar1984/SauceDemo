@@ -12,7 +12,7 @@ public class CartPage {
 		
 	}
 	
-	public int FindProduct(WebDriver driver,String product) throws InterruptedException {
+	public int removeProduct(WebDriver driver,String product) throws InterruptedException {
 		
 		
 		List<WebElement> cartProducts = driver.findElements(By.cssSelector("div.cart_item"+" div a"));
@@ -39,8 +39,5 @@ public class CartPage {
 	
 		return productPrice;
 	}
-	public void removeProduct(WebDriver driver) {
-		
-		driver.findElement(By.xpath("//div[@class='cart_item']//button")).click();
-	}
+	
 }
