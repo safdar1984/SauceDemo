@@ -52,5 +52,8 @@ public class CartPage {
 
 		return productPrice;
 	}
-
+		public void checkOut(WebDriver driver) 
+		{
+			driver.findElement(By.id("checkout")).click();
+		}
 }

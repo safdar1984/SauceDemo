@@ -1,3 +1,5 @@
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,6 +17,7 @@ public class BaseClass {
 		Login login = new Login();
 		SelectProduct selectPrd = new SelectProduct();
 		CartPage cartpage = new CartPage();
+		CheckOut checkout = new CheckOut();
 		login.loginUser(driver);
 		selectPrd.selectHighestPriceProduct(driver);
 		selectPrd.selectLowestPriceProduct(driver);
@@ -35,7 +38,16 @@ public class BaseClass {
 
 			System.out.println(productPrice + " is price");
 
-		}
+		}	
+		
+		driver.findElement(By.cssSelector("#continue-shopping")).click();
+		Thread.sleep(2000);
+		
+		selectPrd.selectRemainingProducts(driver);
+		cartpage.gotoCart(driver);
+		cartpage.checkOut(driver);
+		checkout.checkOutPage(driver);
+		checkout.compareProducts(driver);
 
 	}
 

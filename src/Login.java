@@ -5,12 +5,17 @@ import org.openqa.selenium.edge.EdgeDriver;
 
 public class Login {
 	
+	public String username = "standard_user";
+	String password = "secret_sauce";
+	String url = "https://www.saucedemo.com/";
+	
 	public void loginUser(WebDriver driver) {
 		
-		driver.get("https://www.saucedemo.com/");
-		driver.findElement(By.id("user-name")).sendKeys("standard_user");
-		driver.findElement(By.id("password")).sendKeys("secret_sauce");
+	    
+		driver.get(url);
+		driver.findElement(By.id("user-name")).sendKeys(username);
+		driver.findElement(By.id("password")).sendKeys(password);
 		driver.findElement(By.id("login-button")).click();
 	}
-
+ 
 }
