@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import dev.failsafe.internal.util.Assert;
+
 public class BaseClass {
 
 	public static void main(String[] args) throws InterruptedException {
@@ -48,6 +50,15 @@ public class BaseClass {
 		cartpage.checkOut(driver);
 		checkout.checkOutPage(driver);
 		checkout.compareProducts(driver);
+		String[] checkoutInfo = checkout.getCheckoutInfo(driver);
+		for(String b : checkoutInfo) {
+			System.out.println(b);
+		}
+		checkout.finish(driver);
+		String[] confirmText = checkout.ConfirmationText(driver);
+	
+		confirmText[0].equalsIgnoreCase("Thank you for your order!");
+		confirmText[1].equals("Your order has been dispatched, and will arrive just as fast as the pony can get there!");
 
 	}
 

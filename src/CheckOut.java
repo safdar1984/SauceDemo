@@ -29,5 +29,30 @@ public class CheckOut {
 			System.out.println("Products are not equal");
 		}
 	}
+	public String[] getCheckoutInfo(WebDriver driver) {
+		
+		String paymentInfo = driver.findElement(By.xpath("//div[@class='summary_value_label'][1]")).getText();
+		String shippingInfo = driver.findElement(By.xpath("//div[@class='summary_value_label'][2]")).getText();
+		String totalPrice = driver.findElement(By.cssSelector("div.summary_info_label.summary_total_label")).getText();
+		
+		String[] checkoutInfo = new String[3];
+		
+		checkoutInfo[0] = paymentInfo;
+		checkoutInfo[1] = shippingInfo;
+		checkoutInfo[2] = totalPrice;
+		return checkoutInfo;
+		
+	}
+	public void finish(WebDriver driver) {
+		
+		driver.findElement(By.cssSelector("button#finish")).click();
+	}
+	public String[] ConfirmationText(WebDriver driver) {
+		
+		String[] confirmationText = new String[2];
+		confirmationText[0] = driver.findElement(By.cssSelector("h2.complete-header")).getText();
+		confirmationText[1] = driver.findElement(By.cssSelector("div.complete-text")).getText();
+		return confirmationText;
+	}
 
 }
