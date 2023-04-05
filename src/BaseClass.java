@@ -5,13 +5,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import dev.failsafe.internal.util.Assert;
 
 public class BaseClass {
 
-	public static void main(String[] args) throws InterruptedException {
-
+		@Test
+		public void SauceDemo() throws InterruptedException{
 		WebDriver driver = new EdgeDriver();
 		driver.manage().window().maximize();
 		String product = "Test.allTheThings() T-Shirt (Red)";
@@ -61,5 +63,12 @@ public class BaseClass {
 		confirmText[1].equals("Your order has been dispatched, and will arrive just as fast as the pony can get there!");
 
 	}
+		
+		@BeforeMethod
+		public void beforeMethod(){
+			
+			
+			
+		}
 
 }

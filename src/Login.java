@@ -2,6 +2,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 public class Login {
 	
@@ -10,7 +12,6 @@ public class Login {
 	String url = "https://www.saucedemo.com/";
 	
 	public void loginUser(WebDriver driver) {
-		
 	    
 		driver.get(url);
 		driver.findElement(By.id("user-name")).sendKeys(username);
