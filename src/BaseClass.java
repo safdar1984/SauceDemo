@@ -16,7 +16,7 @@ public class BaseClass {
 		public void SauceDemo() throws InterruptedException{
 		WebDriver driver = new EdgeDriver();
 		driver.manage().window().maximize();
-		String product = "Test.allTheThings() T-Shirt (Red)";
+		String product = "Sauce Labs Backpack";
 
 		Login login = new Login();
 		SelectProduct selectPrd = new SelectProduct();
