@@ -3,6 +3,8 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.BeforeMethod;
@@ -12,9 +14,15 @@ import dev.failsafe.internal.util.Assert;
 
 public class BaseClass {
 
-		@Test
-		public void SauceDemo() throws InterruptedException{
-		WebDriver driver = new EdgeDriver();
+	@Test
+	public void SauceDemo() throws InterruptedException {
+		System.setProperty("webdriver.chrome.driver",
+				"C:\\Users\\sra\\Downloads\\chromedriver_win32 (1)\\chromedriver.exe");
+
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--remote-allow-origins=*");
+
+		WebDriver driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
 		String product = "Sauce Labs Backpack";
 
@@ -42,33 +50,32 @@ public class BaseClass {
 
 			System.out.println(productPrice + " is price");
 
-		}	
-		
+		}
+
 		driver.findElement(By.cssSelector("#continue-shopping")).click();
 		Thread.sleep(2000);
-		
+
 		selectPrd.selectRemainingProducts(driver);
 		cartpage.gotoCart(driver);
 		cartpage.checkOut(driver);
 		checkout.checkOutPage(driver);
 		checkout.compareProducts(driver);
 		String[] checkoutInfo = checkout.getCheckoutInfo(driver);
-		for(String b : checkoutInfo) {
+		for (String b : checkoutInfo) {
 			System.out.println(b);
 		}
 		checkout.finish(driver);
 		String[] confirmText = checkout.ConfirmationText(driver);
-	
+
 		confirmText[0].equalsIgnoreCase("Thank you for your order!");
-		confirmText[1].equals("Your order has been dispatched, and will arrive just as fast as the pony can get there!");
+		confirmText[1]
+				.equals("Your order has been dispatched, and will arrive just as fast as the pony can get there!");
 
 	}
-		
-		@BeforeMethod
-		public void beforeMethod(){
-			
-			
-			
-		}
+
+	@BeforeMethod
+	public void beforeMethod() {
+
+	}
 
 }

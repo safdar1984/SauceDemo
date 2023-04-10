@@ -2,16 +2,16 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-04-08T14:38:49 PKT" name="Suite" finished-at="2023-04-08T14:39:07 PKT" duration-ms="18554">
+  <suite started-at="2023-04-10T16:02:04 PKT" name="Suite" finished-at="2023-04-10T16:02:23 PKT" duration-ms="19038">
     <groups>
     </groups>
-    <test started-at="2023-04-08T14:38:49 PKT" name="CompleteFlow" finished-at="2023-04-08T14:39:07 PKT" duration-ms="18554">
+    <test started-at="2023-04-10T16:02:04 PKT" name="CompleteFlow" finished-at="2023-04-10T16:02:23 PKT" duration-ms="19038">
       <class name="BaseClass">
-        <test-method is-config="true" signature="beforeMethod()[pri:0, instance:BaseClass@16ec5519]" started-at="2023-04-08T14:38:49 PKT" name="beforeMethod" finished-at="2023-04-08T14:38:49 PKT" duration-ms="8" status="PASS">
+        <test-method is-config="true" signature="beforeMethod()[pri:0, instance:BaseClass@16ec5519]" started-at="2023-04-10T16:02:04 PKT" name="beforeMethod" finished-at="2023-04-10T16:02:04 PKT" duration-ms="13" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- beforeMethod -->
-        <test-method signature="SauceDemo()[pri:0, instance:BaseClass@16ec5519]" started-at="2023-04-08T14:38:49 PKT" name="SauceDemo" finished-at="2023-04-08T14:39:07 PKT" duration-ms="18503" status="PASS">
+        <test-method signature="SauceDemo()[pri:0, instance:BaseClass@16ec5519]" started-at="2023-04-10T16:02:04 PKT" name="SauceDemo" finished-at="2023-04-10T16:02:23 PKT" duration-ms="18952" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- SauceDemo -->
