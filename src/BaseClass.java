@@ -24,7 +24,8 @@ public class BaseClass {
 
 		WebDriver driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
-		String product = "Sauce Labs Backpack";
+		String product = "Sauce Labs Fleece Jacket";
+		//Updated on April 12
 
 		Login login = new Login();
 		SelectProduct selectPrd = new SelectProduct();
