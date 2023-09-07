@@ -1,0 +1,65 @@
+package SmokeTest;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ArtApp.TestComponents.BaseClass;
+
+public class CollectionArea extends BaseClass {
+
+	public void AddArtwork(WebDriver driver) throws InterruptedException {
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+		String testData = "This is test data added for this artwork. It’s just for testing purpose and a try to add maximum data in this field. Hope it will fulfill testing purpose. It will help to know how much data is causing to slow down the performance of artwork listing. ";
+		String dateValue = getDate();
+		int artworkValue = randomInteger(0, 1000000);
+		String artworkString = Integer.toString(artworkValue);
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a)[2]"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, 'artwork-add')]"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_artworkTitle")))
+				.sendKeys("Artwork -" + dateValue);
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_cardNumber")))
+				.sendKeys(artworkString);
+		driver.findElement(By.id("add_artwork_from_category")).sendKeys("Category 2");
+		driver.findElement(By.id("add_artwork_from_medium")).sendKeys("Medium 1");
+
+		driver.findElement(By.id("add_artwork_from_tags")).sendKeys("tag");
+		driver.findElement(By.id("add_artwork_from_collectionDate_date")).sendKeys("13/05/1988");
+		driver.findElement(By.id("add_artwork_from_dimensions_height")).sendKeys("452");
+		driver.findElement(By.id("add_artwork_from_dimensions_width")).sendKeys("625");
+		driver.findElement(By.id("add_artwork_from_dimensions_depth")).sendKeys("785");
+		driver.findElement(By.id("add_artwork_from_annotationToDimensions")).sendKeys("Annotations to dimensions");
+		driver.findElement(By.id("add_artwork_from_notes")).sendKeys(testData);
+		driver.findElement(By.id("add_artwork_from_reference")).sendKeys(testData);
+		driver.findElement(By.id("add_artwork_from_description")).sendKeys(testData);
+		driver.findElement(By.id("add_artwork_from_inscription")).sendKeys(testData);
+		driver.findElement(By.id("add_artwork_from_edition")).sendKeys(testData);
+		driver.findElement(By.id("add_artwork_from_provenance")).sendKeys(testData);
+		driver.findElement(By.id("add_artwork_from_framingDetails")).sendKeys(testData);
+		driver.findElement(By.id("add_artwork_from_packingDetails")).sendKeys(testData);
+		driver.findElement(By.id("add_artwork_from_packingCrateRef")).sendKeys("Packing Crate Reference");
+
+		driver.findElement(By.xpath("(//button[@type='submit'])[1]")).click();
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("(//button[@type='submit'])[1]")).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_status"))).click();
+		// int randomStatus = randomInteger(0, 3);
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_status"))).sendKeys("Owned");
+		driver.findElement(By.id("add_artwork_from_status")).sendKeys(Keys.ENTER);
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_statusChangedAt")))
+				.sendKeys("09/04/2015");
+		driver.findElement(By.id("add_artwork_from_statusChangedAt")).sendKeys(Keys.ENTER);
+		driver.findElement(By.cssSelector("button[role='switch']")).click();
+		Thread.sleep(1000);
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("span.anticon.anticon-close"))).click();
+		// System.out.println("Add Collection method");
+	}
+
+}

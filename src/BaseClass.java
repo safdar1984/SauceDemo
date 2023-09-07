@@ -6,23 +6,32 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 import dev.failsafe.internal.util.Assert;
 
 public class BaseClass {
 
 	@Test
 	public void SauceDemo() throws InterruptedException {
-		System.setProperty("webdriver.chrome.driver",
-				"C:\\Users\\sra\\Downloads\\chromedriver_win32 (1)\\chromedriver.exe");
+		
+		  System.setProperty("webdriver.chrome.driver", "C:\\Users\\sra\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
+		  
+		  ChromeOptions options = new ChromeOptions();
+		  options.addArguments("--remote-allow-origins=*");
+		  WebDriver driver = new ChromeDriver(options);
+		 
 
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--remote-allow-origins=*");
-
-		WebDriver driver = new ChromeDriver(options);
+		/*
+		 * System.setProperty("webdriver.edge.driver",
+		 * "C:\\Users\\sra\\Downloads\\edgedriver_win64\\msedgedriver.exe");
+		 * 
+		 * EdgeOptions options = new EdgeOptions();
+		 * options.addArguments("--remote-allow-origins=*"); WebDriver driver = new
+		 * EdgeDriver(options);
+		 */
+		
 		driver.manage().window().maximize();
 		String product = "Sauce Labs Fleece Jacket";
 		//Updated on April 12
@@ -74,9 +83,10 @@ public class BaseClass {
 
 	}
 
-	@BeforeMethod
-	public void beforeMethod() {
-
-	}
+	/*
+	 * @BeforeMethod public void beforeMethod() {
+	 * 
+	 * }
+	 */
 
 }

@@ -1,0 +1,9 @@
+package SmokeTest;
+
+public class Reports {
+
+	public void ExpenseReport() {
+		
+		System.out.println("Opening Expense Report!");
+	}
+}

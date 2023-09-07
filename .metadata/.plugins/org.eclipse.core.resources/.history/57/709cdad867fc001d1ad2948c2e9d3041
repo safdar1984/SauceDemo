@@ -1,0 +1,69 @@
+package PageObjectModelsforTests;
+
+import org.openqa.selenium.*;
+import org.openqa.selenium.By.ByXPath;
+import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class POMClickPage {
+	
+	String url = "https://the-internet.herokuapp.com" ;
+	String abtestingxpath = "//a[normalize-space()='A/B Testing']";
+	String expectedmessagexpath = "//h3[contains(text(),\"A/B\")]";
+	boolean expectedmessage;
+	
+	WebDriver driver;
+	
+	//constructor
+	public POMClickPage(WebDriver driver) {
+		this.driver=driver;
+	}
+	
+	
+	public void setUp() 
+	{
+	
+	System.setProperty("webdriver.chrome.drive", "%src\\main\\resources%\\chromedriver.exe") ;
+	driver = new ChromeDriver();
+	driver.manage().window().maximize();
+	}
+	
+	
+	public void gotoURL()
+	{
+		driver.get(url);
+	}
+	
+	public void clickabtestinglink()
+	
+	{
+		
+		driver.findElement(By.xpath(abtestingxpath)).click();
+	}
+	
+	
+	public void expectedmessagetext()
+	{
+		
+	expectedmessage = driver.findElement(By.xpath(expectedmessagexpath)).isDisplayed();
+		
+	}
+	
+	public void assertiontomatchabtestingheadingText()
+	    {
+	    	Assert.assertEquals(true, expectedmessage);
+	    	System.out.println("Click Test Passed. ");
+			
+	    }	    
+		
+		public void tearDown()
+		{
+			
+		driver.quit();
+		}
+		
+	}
+	

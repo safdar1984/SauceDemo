@@ -1,0 +1,30 @@
+package Tests;
+import PageObjectModelsforTests.POMClickPage;
+
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+
+@Test
+public class ClickTest {
+
+	public static void name() {
+		
+	
+	
+	POMClickPage object = new POMClickPage(null); 
+	
+	
+	object.setUp();
+	object.gotoURL();
+	object.clickabtestinglink();
+	object.expectedmessagetext();
+	object.assertiontomatchabtestingheadingText();
+	object.tearDown();
+	
+	}
+}

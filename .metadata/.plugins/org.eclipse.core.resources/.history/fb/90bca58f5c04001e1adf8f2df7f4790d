@@ -1,0 +1,29 @@
+package ArtApp.TestComponents;
+
+import org.testng.annotations.DataProvider;
+
+public class DataProviderClass {
+	@DataProvider(name = "testData")
+	public static Object[][] loginData() {
+		return new Object[][] { { "raosafdarraza@gmail.com", "Art@pp123" }, { "sra@ciklum.com", "Art@pp123" } };
+	}
+
+	@DataProvider(name = "statusData")
+	public static Object[][] statusValues() {
+		return new Object[][] { { "Owned" }, { "Sold" }, { "Split" }, { "Other" } };
+	}
+
+	@DataProvider(name = "CategoryData")
+	public static Object[][] categoryValues() {
+		return new Object[][] { { "Category 1" }, { "Category 2" }, { "Category 3" } };
+	}
+	@DataProvider(name = "ReportNames")
+	public static Object[][] reportNames() {
+		return new Object[][] { { "Expense Report", 1 }, { "Inventory Report" , 2 }, { "Insurance Report", 3 }, {"Ownership Report", 4}, {"Sales Report" , 5} };
+	}
+	@DataProvider(name = "WordAndPDF")
+	public static Object[][] wordAndPDF(){
+		return new Object[][] {  };
+
+	}
+}

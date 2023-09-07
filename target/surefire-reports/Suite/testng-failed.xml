@@ -5,7 +5,6 @@
     <classes>
       <class name="BaseClass">
         <methods>
-          <include name="beforeMethod"/>
           <include name="SauceDemo"/>
         </methods>
       </class> <!-- BaseClass -->

@@ -1,0 +1,51 @@
+package SmokeTest;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Random;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ArtApp.TestComponents.BaseClass;
+
+public class LocationsArea {
+
+	public void LocationTab(WebDriver driver) throws InterruptedException {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Locations')]"))).click();
+		System.out.println("Location tab");
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[role='tab']:nth-child(2)"))).click();
+		Thread.sleep(3000);
+
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("depratureContact_list"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-select-item-option-content")));
+		int departureContactList = driver.findElements(By.cssSelector(".ant-select-item-option-content")).size();
+		List<WebElement> departureContacts = driver.findElements(By.cssSelector(".ant-select-item-option-content"));
+		System.out.println("No of contacts are " + departureContactList);
+
+		int NoOfMovements;
+
+		for (int i = 0; i < departureContactList; i++) {
+			Thread.sleep(3000);
+			if(i>7) {
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", departureContacts.get(i-5));
+			Thread.sleep(2000);
+			}
+			departureContacts.get(i).click();
+			String contactName = departureContacts.get(i).getText();
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("tbody>tr")));
+			NoOfMovements = driver.findElements(By.cssSelector(".ant-table-row")).size();
+			System.out.println("For contact '"+contactName+"' Total records are " + NoOfMovements);
+			Thread.sleep(3000);
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-select-selection-item"))).click();
+			
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-select-item")));
+		}
+	}
+
+}

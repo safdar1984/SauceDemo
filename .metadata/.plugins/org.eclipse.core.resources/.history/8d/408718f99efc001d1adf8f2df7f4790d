@@ -1,0 +1,314 @@
+package SmokeTest;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import com.google.common.base.Verify;
+
+import ArtApp.TestComponents.BaseClass;
+import ArtApp.TestComponents.DataProviderClass;
+
+public class InitialTest extends BaseClass {
+
+	Login login = new Login();
+	LocationsArea locations = new LocationsArea();
+	InsurancePolicies ip = new InsurancePolicies();
+	String afterLoginPageTitle = "Dashboard | Global Collections";
+	WebDriver driver = InitializeBrowser();
+	String collectionsPageUrl = "https://artapp.drydock.studio/artwork-list";
+	// String collectionsPageUrl = "https://artapp.lighthouse.watch/artwork-list";
+	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(80));
+	WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(6));
+	String status = "Owned";
+
+	@Test
+	public void FirstFlow() throws InterruptedException {
+
+		String loginEmail = driver.findElement(By.xpath("(//a/div//span)[2]")).getText();
+		Assert.assertEquals(login.username, loginEmail);
+
+		wait.until(ExpectedConditions.titleIs(afterLoginPageTitle));
+
+		Assert.assertEquals(driver.getTitle(), afterLoginPageTitle);
+		Assert.assertEquals(driver.findElement(By.tagName("h3")).getText(), "Global Collection");
+		driver.findElement(By.xpath("(//span[@role='img'])[1]")).click();
+		Assert.assertEquals(driver.findElement(By.tagName("h3")).getText(), "GC");
+		driver.close();
+
+	}
+
+	@Test
+	public void CollectionArea() throws InterruptedException {
+
+		driver.findElement(By.xpath("(//a)[2]")).click();
+
+		wait.until(ExpectedConditions.urlMatches(collectionsPageUrl));
+
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.id("sortBy")));
+		WebElement sortByField = driver.findElement(By.xpath("//input[@id='sortBy']"));
+
+		if (sortByField != null) {
+			System.out.println("Sort by Option is present");
+		} else {
+			System.out.println("Sort by Option is not present");
+		}
+
+		System.out.println(driver.getCurrentUrl());
+
+		Thread.sleep(3000);
+		CountRowsPerPages(driver);
+
+	}
+
+	@Test
+	public void Login() throws InterruptedException {
+		// driver.get("https://artapp.drydock.studio/");
+		driver.get("https://artapp.lighthouse.watch/");
+		Thread.sleep(2000);
+		login.LoginMethod(driver);
+		Thread.sleep(2000);
+
+	}
+	@Test
+	public void CountRecords() throws InterruptedException {
+		CountRowsPerPages(driver);
+	}
+
+	@Test
+	public void CategoryFilter() throws InterruptedException {
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a)[2]"))).click();
+		WebElement Category = wait.until(ExpectedConditions.elementToBeClickable(By.id("category")));
+		Category.click();
+		Thread.sleep(2000);
+		Category.sendKeys("Category 1");
+		Category.sendKeys(Keys.ENTER);
+		Thread.sleep(3000);
+		List<WebElement> ArtWorkEle = driver.findElements(By.cssSelector("tbody>tr"));
+		
+		for (WebElement artele : ArtWorkEle) {
+			Thread.sleep(3000);
+			wait.until(ExpectedConditions.elementToBeClickable(artele.findElement(By.tagName("a")))).click();
+			String CategoryOfArtwork = wait.until(ExpectedConditions.elementToBeClickable(
+					By.xpath("(//div[@class='half-left-section']//span[@class='blue-value'])[2]"))).getText();
+			String ArtworkTitle = driver.findElement(By.cssSelector(".ant-row.detail-span.marginTop span")).getText();
+			String CardNumber = driver.findElement(By.xpath("//div[@class='ant-row detail-span']//span")).getText();
+			System.out.println("Category of Artwork " + ArtworkTitle + " with Card Number" + CardNumber + " is "
+					+ CategoryOfArtwork);
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//button)[2]"))).click();
+		}
+		/*
+		 * List<WebElement> dropdownOptions =
+		 * wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(
+		 * ".ant-select-item-option-content"))); List<String> dropdownValues = new
+		 * ArrayList<String>();
+		 * 
+		 * for (WebElement option : dropdownOptions) {
+		 * 
+		 * dropdownValues.add(option.getText()); }
+		 * 
+		 * for (String dropdownValue : dropdownValues) {
+		 * System.out.println("Showing categroy values " + dropdownValue); }
+		 */ }
+
+	@Test
+	public void InsurancePoliciesSection() throws InterruptedException {
+		
+		String InsurancePolicy = "State Life";
+		String premium = "1500";
+
+		ip.InsurancePremiumExpense(driver, InsurancePolicy, premium);
+	}
+
+	@Test
+	public void Locations() throws InterruptedException {
+		locations.LocationTab(driver);
+	}
+
+	/*
+	 * @Test public void CountRecords() throws InterruptedException {
+	 * CountRowsPerPages(driver); }
+	 */
+
+	@Test(dataProviderClass = DataProviderClass.class, dataProvider = "CategoryData")
+	public void CategoryFilter(String category) throws InterruptedException {
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a)[2]"))).click();
+		WebElement Category = wait.until(ExpectedConditions.elementToBeClickable(By.id("category")));
+		Category.click();
+		Thread.sleep(2000);
+		Category.sendKeys(category);
+		Category.sendKeys(Keys.ENTER);
+		Thread.sleep(3000);
+		List<WebElement> ArtWorkEle = driver.findElements(By.cssSelector("tbody>tr"));
+		int ArtworkOnPage = driver.findElements(By.cssSelector("tbody>tr")).size();
+		System.out.println("Now going through '" + category + "' it has total " + ArtworkOnPage + " artowrks");
+		for (int i = 1; i <= ArtworkOnPage; i++) {
+
+			// System.out.println("Inside loop!");
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@class='artwork-title'])[" + i + "]")))
+					.click();
+			Thread.sleep(2000);
+			String artworkNameOnDetailsPage = wait
+					.until(ExpectedConditions.elementToBeClickable(By.cssSelector("span.black-span.margin-span")))
+					.getText();
+			String CardNumberOnDetailsPage;
+			try {
+				CardNumberOnDetailsPage = wait2
+						.until(ExpectedConditions.elementToBeClickable(By.xpath("(//span[@class='black-span'])[2]")))
+						.getText();
+			} catch (Exception e) {
+				CardNumberOnDetailsPage = wait2
+						.until(ExpectedConditions.elementToBeClickable(By.xpath("(//span[@class='black-span'])")))
+						.getText();
+			}
+			System.out.println("Artwork name on details page is '" + artworkNameOnDetailsPage + "' and Card Number is "
+					+ CardNumberOnDetailsPage);
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//button)[2]"))).click();
+			Thread.sleep(3000);
+
+		}
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.float-right"))).click();
+
+	}
+
+	@Test(dataProviderClass = DataProviderClass.class, dataProvider = "statusData")
+	public void VerifyStatus(String status) throws InterruptedException {
+
+		driver.findElement(By.xpath("(//a)[2]")).click();
+		wait.until(ExpectedConditions.urlMatches(collectionsPageUrl));
+		if (status == "Owned") {
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Owned')]"))).click();
+		} else if (status == "Sold") {
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Owned')]"))).click();
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Sold')]"))).click();
+		} else if (status == "Split") {
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Sold')]"))).click();
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Split')]"))).click();
+		} else if (status == "Other") {
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Split')]"))).click();
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Other')]"))).click();
+		}
+
+		Thread.sleep(5000);
+		String artworkText = driver.findElement(By.cssSelector(".font-weight600")).getText();
+		String artworkCount = artworkText.split(" ")[0];
+
+		String statusDisplayed = wait
+				.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector(".cursor-auto")))).getText();
+		int noOfArtwork = Integer.parseInt(artworkCount);
+		System.out.println("There are total " + noOfArtwork + " artworks with " + status + " status");
+		int NoOfRows = driver.findElements(By.cssSelector("tbody>tr")).size();
+		for (int i = 0; i < NoOfRows; i++) {
+			if (!statusDisplayed.equalsIgnoreCase(status)) {
+				System.out.println("Status doesn't match");
+			}
+		}
+		Assert.assertEquals(noOfArtwork, NoOfRows);
+
+	}
+
+	@Test
+	public void GroupsFilter() throws InterruptedException {
+
+		String[][] ArtworkPerGroup = GetArtworkListPerGroup();
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a)[2]"))).click();
+		for (int k = 0; k < ArtworkPerGroup.length; k++) {
+			WebElement GroupsField = wait.until(ExpectedConditions.elementToBeClickable(By.id("group")));
+			GroupsField.sendKeys(ArtworkPerGroup[k][0]);
+			Thread.sleep(3000);
+			GroupsField.sendKeys(Keys.ENTER);
+			Thread.sleep(3000);
+			driver.findElement(By.cssSelector(".font-weight600")).click();
+			Thread.sleep(2000);
+			String artworkTextPerGroup = wait
+					.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".font-weight600"))).getText();
+			String artworkCountPerGroup = artworkTextPerGroup.split(" ")[0];
+			if (artworkCountPerGroup == "0") {
+
+				artworkTextPerGroup = wait
+						.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".font-weight600"))).getText();
+				artworkCountPerGroup = artworkTextPerGroup.split(" ")[0];
+
+			}
+			int NoOfArtworks = Integer.parseInt(artworkCountPerGroup);
+			int NoOfArtworksFromSettings = Integer.parseInt(ArtworkPerGroup[k][1]);
+			Assert.assertEquals(NoOfArtworks, NoOfArtworksFromSettings);
+
+			int artworkRows = driver.findElements(By.cssSelector("tbody>tr")).size();
+			Assert.assertEquals(NoOfArtworksFromSettings, artworkRows);
+			String GroupsText;
+
+			try {
+//<<<<<<< HEAD
+				GroupsText = wait.until(ExpectedConditions.presenceOfElementLocated(
+						By.cssSelector("tbody>tr>td:nth-child(3) div:nth-of-type(2) span:nth-of-type(2)")))
+				.getText();
+//=======
+				GroupsText = wait2.until(ExpectedConditions.presenceOfElementLocated(
+						By.cssSelector("tbody>tr>td:nth-child(3) div:nth-of-type(3) span:nth-of-type(2)")))
+				.getText();
+//>>>>>>> develop
+						
+			} catch (Exception e) {
+//<<<<<<< HEAD
+				GroupsText = wait.until(ExpectedConditions.presenceOfElementLocated(
+						By.cssSelector("tbody>tr>td:nth-child(3) div:nth-of-type(2) span:nth-of-type(2)")))
+				.getText();
+//=======
+				GroupsText = wait2.until(ExpectedConditions.presenceOfElementLocated(
+						By.cssSelector("tbody>tr>td:nth-child(3) div:nth-of-type(2) span:nth-of-type(2)")))
+				.getText();
+//>>>>>>> develop
+						
+			}
+
+			System.out.println("'" + ArtworkPerGroup[k][0] + "' Contains total " + ArtworkPerGroup[k][1]
+					+ " artworks from Settings and total " + artworkRows + " from lists and here group text is "
+					+ GroupsText);
+			wait.until(ExpectedConditions.elementToBeClickable(GroupsField)).click();
+			GroupsField.sendKeys(Keys.BACK_SPACE);
+
+		}
+
+	}
+
+	public String[][] GetArtworkListPerGroup() throws InterruptedException {
+
+		System.out.println("Groups called!");
+		wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Settings"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[2]"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//tbody")));
+		Thread.sleep(3000);
+		List<WebElement> GroupRows = driver.findElements(By.cssSelector("tbody>tr"));
+		System.out.println("No of groups are " + GroupRows.size());
+
+		String[][] ArtworkPerGroup = new String[GroupRows.size()][2];
+		int i = 0;
+		for (WebElement G : GroupRows) {
+
+			List<WebElement> cells = G.findElements(By.tagName("td"));
+			if (cells.size() >= 3) {
+				WebElement groupEle = cells.get(0);
+				WebElement cell = cells.get(2);
+				String data = cell.getText();
+				String group = groupEle.getText();
+				ArtworkPerGroup[i][0] = group;
+				ArtworkPerGroup[i][1] = data;
+				i++;
+			}
+		}
+		return ArtworkPerGroup;
+	}
+}

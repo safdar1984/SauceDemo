@@ -1,0 +1,38 @@
+package SmokeTest;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ArtApp.TestComponents.BaseClass;
+
+public class InsurancePolicies extends BaseClass{
+
+	public void InsurancePremiumExpense(WebDriver driver) throws InterruptedException {
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Insurance Policies"))).click();
+		wait.until(
+				ExpectedConditions.elementToBeClickable(By.linkText("SM Test Insurance policy")))
+				.click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.ant-btn.white-btn-common"))).click();
+		Thread.sleep(2000);
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("owner"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-select-item:nth-child(2)"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']:nth-of-type(1)"))).click();
+		String modifiedDate = getDate();
+		String ExpenseTitle = "Expense "+modifiedDate;
+		System.out.println("Current date is "+ExpenseTitle);
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("insurance_from_title"))).sendKeys(ExpenseTitle);
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("insurance_from_invoiceDate"))).sendKeys("25/05/2021");
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("insurance_from_paymentDate"))).sendKeys("25/05/2021");
+		
+	}
+
+}

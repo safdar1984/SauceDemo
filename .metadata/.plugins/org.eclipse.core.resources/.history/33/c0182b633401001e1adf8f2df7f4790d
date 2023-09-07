@@ -1,0 +1,29 @@
+package SmokeTest;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ArtApp.TestComponents.BaseClass;
+
+public class Reports extends BaseClass {
+
+	public void ExpenseReport(WebDriver driver) throws InterruptedException {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));	
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a)[2]"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//button)[4]"))).click();
+		Thread.sleep(2000);
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-form-item-control-input"))).click();
+	
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("span[title='All artworks']"))).click();
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_reportName"))).sendKeys("Expense Report "+getDate());
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_reportType"))).click();
+		
+		System.out.println("Opening Expense Report!");
+	}
+}

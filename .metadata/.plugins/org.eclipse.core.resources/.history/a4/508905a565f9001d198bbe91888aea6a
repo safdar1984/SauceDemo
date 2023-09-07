@@ -1,0 +1,9 @@
+package SmokeTest;
+
+public class InsurancePolicies {
+	
+	public void InsurancePremiumExpense() {
+		
+	}
+
+}

@@ -1,0 +1,58 @@
+package SmokeTest;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ArtApp.TestComponents.BaseClass;
+
+public class InsurancePolicies extends BaseClass{
+
+	public void InsurancePremiumExpense(WebDriver driver, String insurancePolicy, String premium) throws InterruptedException {
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Insurance Policies"))).click();
+		wait.until(
+				ExpectedConditions.elementToBeClickable(By.linkText(insurancePolicy)))
+				.click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.ant-btn.white-btn-common"))).click();
+		Thread.sleep(2000);
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("owner"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-select-item:nth-child(2)"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']:nth-of-type(1)"))).click();
+		String modifiedDate = getDate();
+		String ExpenseTitle = "Expense "+modifiedDate;
+		System.out.println("Expense title is "+ExpenseTitle);
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("insurance_from_title"))).sendKeys(ExpenseTitle);
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("insurance_from_invoiceDate"))).sendKeys("25/05/2021");
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("insurance_from_paymentDate"))).sendKeys("25/05/2021");
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("insurance_from_currency"))).sendKeys("USD");
+		driver.findElement(By.id("insurance_from_currency")).sendKeys(Keys.ENTER);
+		driver.findElement(By.id("insurance_from_totalInsurancePremium")).sendKeys(premium);
+		Thread.sleep(2000);
+		driver.findElement(By.cssSelector("button[type='submit']")).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.linkText(ExpenseTitle))).click();
+		String ArtworkOfExpense = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//tbody)[2]/tr/td[2]"))).getText();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("span.cursor-pointer"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[role=spinbutton]"))).sendKeys("1200");
+		driver.findElement(By.cssSelector("input[role=spinbutton]")).sendKeys(Keys.ENTER);
+		Thread.sleep(2000);
+		driver.findElement(By.cssSelector("button[type='submit']")).click();
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".ant-notification")));
+		System.out.println("Div appears!");
+		String successMessage = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".ant-notification-notice-message"))).getText();
+		System.out.println("Success message is '"+successMessage+"' and artwork of expense is '"+ArtworkOfExpense+"'");
+		Thread.sleep(2000);
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a)[2]"))).click();
+		
+		
+	}
+
+}

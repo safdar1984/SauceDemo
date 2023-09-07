@@ -1,0 +1,46 @@
+package SmokeTest;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ArtApp.TestComponents.BaseClass;
+
+public class CollectionArea extends BaseClass {
+
+	public void AddArtwork(WebDriver driver) throws InterruptedException {
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+		String dateValue = getDate();
+		int artworkValue = randomInteger(0, 1000000);
+		String artworkString = Integer.toString(artworkValue);
+		//wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a)[2]"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, 'artwork-add')]"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_artworkTitle")))
+				.sendKeys("Artwork -" + dateValue);
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_cardNumber")))
+				.sendKeys(artworkString);
+
+		driver.findElement(By.id("add_artwork_from_tags")).sendKeys("tag");
+		driver.findElement(By.xpath("(//button[@type='submit'])[1]")).click();
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("(//button[@type='submit'])[1]")).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_status"))).click();
+		//int randomStatus = randomInteger(0, 3);
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_status"))).sendKeys("Owned");
+		driver.findElement(By.id("add_artwork_from_status")).sendKeys(Keys.ENTER);
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_statusChangedAt"))).sendKeys("09/04/2015");
+		driver.findElement(By.id("add_artwork_from_statusChangedAt")).sendKeys(Keys.ENTER);
+		driver.findElement(By.cssSelector("button[role='switch']")).click();
+		Thread.sleep(1000);
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("span.anticon.anticon-close"))).click();
+		//System.out.println("Add Collection method");
+	}
+
+}

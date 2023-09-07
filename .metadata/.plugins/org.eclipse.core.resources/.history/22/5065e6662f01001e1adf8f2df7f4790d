@@ -1,0 +1,11 @@
+package SmokeTest;
+
+import org.openqa.selenium.WebDriver;
+
+public class Reports {
+
+	public void ExpenseReport(WebDriver driver) {
+		
+		System.out.println("Opening Expense Report!");
+	}
+}

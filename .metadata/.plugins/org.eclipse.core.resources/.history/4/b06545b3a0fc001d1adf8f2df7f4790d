@@ -1,0 +1,136 @@
+package ArtApp.TestComponents;
+
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.Date;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class BaseClass {
+
+	public WebDriver InitializeBrowser() {
+
+		// System.setProperty("webdriver.chrome.driver",
+		// "C:\\Users\\sra\\Downloads\\chromedriver_win32 (1)\\chromedriver.exe");
+		// ChromeOptions options = new ChromeOptions();
+
+		System.setProperty("webdriver.edge.driver",
+				"C:\\Users\\sra\\Downloads\\edgedriver_win64 (5)\\msedgedriver.exe");
+		EdgeOptions options = new EdgeOptions();
+
+		options.addArguments("--remote-allow-origins=*");
+
+		// WebDriver driver = new ChromeDriver(options);
+		WebDriver driver = new EdgeDriver(options);
+		driver.manage().window().maximize();
+		return driver;
+
+	}
+	public String getDate() {
+		
+		Date d = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMmm");
+		String modifiedDate = dateFormat.format(d);
+		return modifiedDate;
+	}
+	/*
+	 * <<<<<<< HEAD public void CountRowsPerPages(WebDriver driver) throws
+	 * InterruptedException { WebDriverWait wait = new WebDriverWait(driver,
+	 * Duration.ofSeconds(100));
+	 * wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a)[2]"))).
+	 * click(); Thread.sleep(6000);
+	 * 
+	 * String artworkCountText =
+	 * wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(
+	 * ".font-weight600"))).getText();
+	 * wait.until(ExpectedConditions.not(ExpectedConditions.textToBe(By.cssSelector(
+	 * ".font-weight600"), "0"))); //
+	 * wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement
+	 * (driver.findElement(By.cssSelector(".font-weight600")), "200 Artworks")));
+	 * =======
+	 */
+
+	public void CountRowsPerPages(WebDriver driver) throws InterruptedException {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a)[2]"))).click();
+
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".font-weight600")));
+		Thread.sleep(3000);
+		String artworkCountText = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".font-weight600")))
+				.getText();
+		wait.until(ExpectedConditions.not(ExpectedConditions.textToBe(By.cssSelector(".font-weight600"), "0")));
+
+
+		String artworkCount = artworkCountText.split(" ")[0];
+		
+		int artworkCountNumber = Integer.parseInt(artworkCount);
+		System.out.println("Artwork count is " + artworkCountNumber);
+
+		WebElement ul = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-pagination")));
+
+		List<WebElement> pages = ul.findElements(By.tagName("li"));
+
+
+		int NumberofPages = 0;
+		if (artworkCountNumber % 10 == 0) {
+
+			NumberofPages = artworkCountNumber / 10;
+		} else {
+
+			NumberofPages = artworkCountNumber / 10 + 1;
+		}
+		System.out.println("Number of pages are " + NumberofPages);
+		int NumberofArtworksPerPage = 10;
+
+		String pageno;
+	
+//		for (int i = 2; i <= NumberofPages; i++) {
+	//		System.out.println("Pages size is "+pages.size()+" and 2nd last item is "+pages.get(pages.size()-1).getText());
+			//wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-pagination")));
+			//pageno = pages.get(i).getText();
+			System.out.println("Page number is " + pageno);
+		
+
+		//	pages.get(i).click();
+		
+			 
+				
+				 /* try { pages.get(i).click(); } catch (StaleElementReferenceException e) {
+				 * //WebElement pages1 = driver.findElement(By.
+				 * xpath("(//ul[@class='ant-pagination ant-table-pagination ant-table-pagination-center']//li)["
+				 * +i+"]")); pages = driver.findElements(By.
+				 * xpath("(//ul[@class='ant-pagination ant-table-pagination ant-table-pagination-center']//li)"
+				 * )); pages.get(i).click();
+				 * 
+				 * }
+			 
+//=======
+		pages.get(2).click();
+		Thread.sleep(3000);
+		System.out.println(
+				"After clicking now number of pages are " + NumberofPages + " and no of pages are " + pages.size());*/
+
+		for (int j = 2; j <= NumberofPages; j++) {
+			
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("tbody>tr")));
+			int Rows = driver.findElements(By.cssSelector("tbody>tr")).size();
+			System.out.println("No. of rows are "+Rows+" for page no. "+j);
+			wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("li[title='Next Page']"))).click();
+			Thread.sleep(2000);
+//>>>>>>> develop
+			NumberofArtworksPerPage = NumberofArtworksPerPage + 10;
+		}
+		System.out.println("Number of artworks per pages are " + NumberofArtworksPerPage);
+	}
+	}
+}

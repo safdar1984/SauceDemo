@@ -1,0 +1,111 @@
+package SmokeTest;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ArtApp.TestComponents.BaseClass;
+
+public class InsurancePolicies extends BaseClass{
+
+	public void InsurancePremiumExpense(WebDriver driver, String insurancePolicy, String premium) throws InterruptedException {
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Insurance Policies"))).click();
+		wait.until(
+				ExpectedConditions.elementToBeClickable(By.linkText(insurancePolicy)))
+				.click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.ant-btn.white-btn-common"))).click();
+		Thread.sleep(2000);
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("owner"))).click();
+		String OwnerName = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-select-item:nth-child(3)"))).getText();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-select-item:nth-child(3)"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']:nth-of-type(1)"))).click();
+		String modifiedDate = getDate();
+		String ExpenseTitle = "Expense "+modifiedDate;
+		System.out.println("Expense title is "+ExpenseTitle);
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("insurance_from_title"))).sendKeys(ExpenseTitle);
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("insurance_from_invoiceDate"))).sendKeys("25/05/2021");
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("insurance_from_paymentDate"))).sendKeys("25/05/2021");
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("insurance_from_currency"))).sendKeys("USD");
+		driver.findElement(By.id("insurance_from_currency")).sendKeys(Keys.ENTER);
+		driver.findElement(By.id("insurance_from_totalInsurancePremium")).sendKeys(premium);
+		Thread.sleep(2000);
+		driver.findElement(By.cssSelector("button[type='submit']")).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.linkText(ExpenseTitle))).click();
+		String ArtworkOfExpense = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//tbody)[2]/tr/td[2]"))).getText();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("span.cursor-pointer"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[role=spinbutton]"))).sendKeys(premium);
+		driver.findElement(By.cssSelector("input[role=spinbutton]")).sendKeys(Keys.ENTER);
+		Thread.sleep(2000);
+		driver.findElement(By.cssSelector("button[type='submit']")).click();
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".ant-notification")));
+		System.out.println("Div appears!");
+		String successMessage = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".ant-notification-notice-message"))).getText();
+		System.out.println("Success message is '"+successMessage+"' and artwork of expense is '"+ArtworkOfExpense+"' and owner name is '"+OwnerName+"'");
+		Thread.sleep(2000);
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-col.insurer-padding:nth-of-type(4) div:nth-child(2)")));
+		List<WebElement> OwnerNames = driver.findElements(By.cssSelector(".ant-col.insurer-padding:nth-of-type(4) div:nth-child(2)"));
+		
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        // Scroll to the end of the page
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        int i=1;
+		for(WebElement ele : OwnerNames ) {
+			
+		System.out.println(" Name is "+ele.getText());
+		 if(ele.getText().contains(OwnerName)) {
+			 
+			 driver.findElement(By.xpath("(//div[@class='three-dots'])["+i+"]")).click();
+			 Thread.sleep(1000);
+			 driver.findElement(By.cssSelector("button.ant-btn.popup-btn")).click();
+		 }
+		 i++;
+		}
+		 wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("tbody>tr")));
+		 List<WebElement> expenseList = driver.findElements(By.cssSelector("tbody>tr>td>a"));
+		 int TotalExpenses = driver.findElements(By.cssSelector("tbody>tr")).size();
+		 System.out.println("Total expenses are "+TotalExpenses);
+		
+		 for(WebElement expele : expenseList) {
+			 
+			// System.out.println("Text of element is "+expele.getText());
+			 if(expele.getText().equalsIgnoreCase(ExpenseTitle)){
+				 
+				 expele.click();
+				 
+			 }
+		 }
+		 js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+		 String artworkOfExpense = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//tbody)[2]/tr/td[2]"))).getText();
+		 System.out.println("Artwork of expense is "+artworkOfExpense);
+		 driver.findElement(By.xpath("(//tbody)[2]/tr/td[2]")).click();
+		 
+		 wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button:nth-child(4)"))).click();
+		 
+		 wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("tbody>tr>td")));
+		 List<WebElement> allExpenses = driver.findElements(By.cssSelector("tbody>tr>td"));
+		 System.out.println("Text is "+driver.findElement(By.cssSelector("tbody>tr>td")).getText());		 
+			for (WebElement allexp : allExpenses) {
+				
+				String matchArtwork = allexp.getText();
+				System.out.println("Inside final loop and expense title is "+allexp.getText());
+				if (ExpenseTitle.equalsIgnoreCase(matchArtwork)) {
+					System.out.println("It's matched and it is " + matchArtwork);
+				}
+			}
+	}
+
+}

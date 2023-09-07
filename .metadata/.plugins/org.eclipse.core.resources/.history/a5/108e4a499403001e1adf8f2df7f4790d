@@ -1,0 +1,42 @@
+package SmokeTest;
+
+import java.io.File;
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ArtApp.TestComponents.BaseClass;
+
+public class Reports extends BaseClass {
+
+	public void ExpenseReport(WebDriver driver, String reportName) throws InterruptedException {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));	
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a)[2]"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//button)[4]"))).click();
+		Thread.sleep(2000);
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-form-item-control-input"))).click();
+	
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("span[title='All artworks']"))).click();
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_reportName"))).sendKeys(reportName+" "+getDate());
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_reportType"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-select-item:nth-of-type(1)"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_sortBy"))).click();
+		Thread.sleep(2000);
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ant-select-item-option-content'])[6]"))).click();
+		driver.findElement(By.cssSelector("button[type='submit']")).click();
+		Thread.sleep(8000);
+		String fileName = reportName+" "+getDate()+getDateReports()+".xlsx";
+		File downloadedFile = new File("C:\\Users\\sra\\Downloads\\"+fileName);
+		boolean isDownloaded = downloadedFile.exists();
+		if(isDownloaded == true) {
+			System.out.println("File downloaded!");
+		}else {
+			System.out.println("File not downloaded!");
+		}
+	}
+}

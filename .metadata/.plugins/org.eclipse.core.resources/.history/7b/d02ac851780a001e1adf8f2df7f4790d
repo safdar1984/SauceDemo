@@ -1,0 +1,8 @@
+package SmokeTest;
+
+public class CollectionArea {
+
+	public void AddArtwork() {
+		System.out.println("Add Collection method");
+	}
+}

@@ -1,0 +1,54 @@
+package SmokeTest;
+
+import java.io.File;
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import ArtApp.TestComponents.BaseClass;
+
+public class Reports extends BaseClass {
+
+	public void ExpenseReport(WebDriver driver, String reportName, int i) throws InterruptedException {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));	
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a)[2]"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//button)[4]"))).click();
+		Thread.sleep(2000);
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-form-item-control-input"))).click();
+	
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("span[title='All artworks']"))).click();
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_reportName"))).sendKeys(reportName+" "+getDate());
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_reportType"))).click();
+		
+		String reportDDValue = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-select-item:nth-of-type("+i+")"))).getText();
+		System.out.println("Report value is "+reportDDValue);
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".ant-select-item:nth-of-type("+i+")"))).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("add_artwork_from_sortBy"))).click();
+		Thread.sleep(2000);
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ant-select-item-option-content'])[6]"))).click();
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
+		Thread.sleep(6000);
+		String fileName = reportName+" "+getDate()+getDateReports()+".xlsx";
+		File downloadedFile = new File("C:\\Users\\sra\\Downloads\\"+fileName);
+		boolean isDownloaded = downloadedFile.exists();
+		if(isDownloaded == true) {
+			System.out.println("File downloaded!");
+		}else {
+			System.out.println("File not downloaded!");
+		}
+		try {
+			String notificationMessage = driver.findElement(By.cssSelector(".ant-notification-notice-message")).getText();
+			System.out.println("Notification message is "+notificationMessage);
+			
+		}catch(Exception e) {
+			
+			System.out.println("Notification didn't appear!");
+		}
+	}
+}
